@@ -17,21 +17,21 @@ public class Main {
     int i = 0; 
     if(args[i].equals("-t")) {
       i = increase_throwError(i, args.length);
-      timeout = Integer.parseInt(args[i]);
+      timeout = convertToInt(args[i]);
       i = increase_throwError(i, args.length);
       t_flag = true;
     }
     
     if(args[i].equals("-r")) {
       i = increase_throwError(i, args.length);
-      max_retries = Integer.parseInt(args[i]);
+      max_retries = convertToInt(args[i]);
       i = increase_throwError(i, args.length);
       r_flag = true;
     }    
     
     if(args[i].equals("-p")) {
       i = increase_throwError(i, args.length);
-      port = Integer.parseInt(args[i]);
+      port = convertToInt(args[i]);
       i = increase_throwError(i, args.length);
       port_flag = true;
     }
@@ -78,5 +78,14 @@ public class Main {
     System.out.println("Server name is " + name);
   }
   
+  public static int convertToInt(String val) {
+    try {
+      return Integer.parseInt(val);
+    }catch(Exception e){
+      System.out.println("Expected int");
+      throwError();
+    }
+    return -1;
+  }
   
 }
