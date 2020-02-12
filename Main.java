@@ -16,42 +16,51 @@ public class Main {
     
     int i = 0; 
     if(args[i].equals("-t")) {
-      i++;
+      i = increase_throwError(i, args.length);
       timeout = Integer.parseInt(args[i]);
-      i++;
+      i = increase_throwError(i, args.length);
       t_flag = true;
     }
     
     if(args[i].equals("-r")) {
-      i++;
+      i = increase_throwError(i, args.length);
       max_retries = Integer.parseInt(args[i]);
-      i++;
+      i = increase_throwError(i, args.length);
       r_flag = true;
     }    
     
     if(args[i].equals("-p")) {
-      i++;
+      i = increase_throwError(i, args.length);
       port = Integer.parseInt(args[i]);
-      i++;
+      i = increase_throwError(i, args.length);
       port_flag = true;
     }
     
     if(args[i].equals("-mx")) {
       query_type = "mail Server";
-      i++;
+      i = increase_throwError(i, args.length);
     }else if(args[i].equals("-ns")) {
       query_type = "name server";
-      i++;
+      i = increase_throwError(i, args.length);
     }
     
     server = args[i].substring(1);
-    i++;
+    i = increase_throwError(i, args.length);
     name = args[i];
     printVariables(timeout, max_retries, port, query_type, server, name);
   }
   
-  public void throwError() {
+  public static int increase_throwError(int i, int length) {
+    System.out.println("i = " + i + " length = " + length);
+    if ((i+1)==length) { // Looks if index out of bounds
+      throwError();
+    }
+    return i + 1;
+  }
+  
+  public static void throwError() {
     System.out.println("Proper usage is java DnsClient [-t timeout] [-r max-retries] [-p port] [-mx|-ns] @server name");
+    System.exit(-1);
   }
   
   public static void printVariables(int timeout,int max_retries, int port, String query_type, String server, String name) {
