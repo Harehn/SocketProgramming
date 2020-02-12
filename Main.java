@@ -47,12 +47,18 @@ public class Main {
     server = args[i].substring(1);
     i = increase_throwError(i, args.length);
     name = args[i];
+    
+    if((i+1)<args.length) { // if too many arguments, throw error
+      System.out.println("Too many arguments");
+      throwError();
+    }
+    
     printVariables(timeout, max_retries, port, query_type, server, name);
   }
   
   public static int increase_throwError(int i, int length) {
-    System.out.println("i = " + i + " length = " + length);
     if ((i+1)==length) { // Looks if index out of bounds
+      System.out.println("Arguments missing");
       throwError();
     }
     return i + 1;
