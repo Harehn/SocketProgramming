@@ -13,6 +13,11 @@ public class Main {
     String name = "";
     
     
+    if(args.length == 0) {
+      System.out.println("Need at least 2 arguments");
+      throwError();
+    }
+    
     
     int i = 0; 
     if(args[i].equals("-t")) {
