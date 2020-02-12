@@ -15,31 +15,31 @@ public class Main {
     
     
     int i = 0; 
-    if(args[i]=="-t") {
+    if(args[i].equals("-t")) {
       i++;
       timeout = Integer.parseInt(args[i]);
       i++;
       t_flag = true;
     }
     
-    if(args[i]=="-r") {
+    if(args[i].equals("-r")) {
       i++;
       max_retries = Integer.parseInt(args[i]);
       i++;
       r_flag = true;
     }    
     
-    if(args[i]=="-p") {
+    if(args[i].equals("-p")) {
       i++;
       port = Integer.parseInt(args[i]);
       i++;
       port_flag = true;
     }
     
-    if(args[i]=="-mx") {
+    if(args[i].equals("-mx")) {
       query_type = "mail Server";
       i++;
-    }else if(args[i]=="-ns") {
+    }else if(args[i].equals("-ns")) {
       query_type = "name server";
       i++;
     }
@@ -47,9 +47,21 @@ public class Main {
     server = args[i].substring(1);
     i++;
     name = args[i];
+    printVariables(timeout, max_retries, port, query_type, server, name);
   }
   
   public void throwError() {
     System.out.println("Proper usage is java DnsClient [-t timeout] [-r max-retries] [-p port] [-mx|-ns] @server name");
   }
+  
+  public static void printVariables(int timeout,int max_retries, int port, String query_type, String server, String name) {
+    System.out.println("Timeout is "+ timeout);
+    System.out.println("Max-retries is " + max_retries);
+    System.out.println("Port is " + port);
+    System.out.println("Query type is " + query_type);
+    System.out.println("Server is " + server);
+    System.out.println("Server name is " + name);
+  }
+  
+  
 }
