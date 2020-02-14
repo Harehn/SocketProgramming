@@ -1,16 +1,18 @@
 
 public class Main {
 
+  private static int timeout = 5;
+  private static boolean t_flag = false;
+  private static int max_retries = 3;
+  private static boolean r_flag = false;
+  private static int port = 53;
+  private static boolean port_flag = false;
+  private static String query_type = "A"; 
+  private static String server = "";
+  private static String name = "";
+  private static byte[] ipAddress;
+
   public static void main(String[] args) {
-    int timeout = 5;
-    boolean t_flag = false;
-    int max_retries = 3;
-    boolean r_flag = false;
-    int port = 53;
-    boolean port_flag = false;
-    String query_type = "A"; 
-    String server = "";
-    String name = "";
     
     
     if(args.length == 0) {
@@ -59,6 +61,11 @@ public class Main {
     }
     
     printVariables(timeout, max_retries, port, query_type, server, name);
+    ipAddress = getIP(server);
+    for(byte a: ipAddress) {
+      System.out.print(a+":");
+    }
+    System.out.println();
     printRequest(name, server, query_type);
   }
   
@@ -100,4 +107,21 @@ public class Main {
     System.out.println("Request type: " + query_type);
   }
   
+  public static byte[] getIP(String server) {
+    String[] splitServer= server.split("\\.");
+    if(splitServer.length != 4) {
+        System.out.println("Incorrect IP address");
+        throwError();
+      }
+    byte[] ipAddress =new byte[4];
+    for(int k=0;k<4;k++) {
+        int ip=convertToInt(splitServer[k]);
+        if (ip<0 | ip >=256) {
+            System.out.println("Wrong ip value[0,255]");
+            throwError();
+          }
+        ipAddress[k]=(byte) ip;    // get IP address as a byte array
+      }
+    return ipAddress;
+  }
 }
