@@ -21,7 +21,7 @@ public class Request {
     	 
 		 // 1st step : create header 
 		 
-		 // create random ID and put it to the header buffer
+		 // create random ID and put it to the request buffer
 		 Random r = new Random();
 		 byte[] ID = new byte[2];
 		 r.nextBytes(ID);
@@ -47,12 +47,36 @@ public class Request {
 		 // create domain name
 		 
 		 String[] name = domainName.split("\\.");
-		 //TODO 
+		 // put the domain name in request buffer
+		 for(int i=0; i<name.length;i++) {
+			 String partOfName= name[i];
+			 request.put((byte)partOfName.length());
+			 for (int j=0;j<partOfName.length();j++){
+				 request.put((byte)partOfName.charAt(j));				 
+			 }
+		 }
 		 
+		 request.put((byte)0x00); // out zero length label marking the end of the QNAME field.
 		 
+		 // now we need to put QTYPE 
 		 
+		 switch(queryType) {
+		 case "type A":
+			 request.put((byte)0x0001);
+		 case "name server":
+			 request.put((byte)0x0002);
+		 case "mail Server":
+			 request.put((byte)0x0003);
+		 }
+		 
+		 // now we need to put QCLASS
+		 request.put((byte) 0x0001);
+		 
+		 // REQUEST buffer finish, transfer it to the byte array.
+		 
+		 byte[]requestData = request.array();
     	 
-    	 return null;
+    	 return requestData;
     	 
      }
      

@@ -40,9 +40,12 @@ public class UDPClient {
 
 				sendData= new byte[1024];
 				receiveData = new byte[1024];
-				// TODO for send date
+			
+				Request request= new Request(queryType,domainName);
+				sendData= request.createRequest();
 
-				sendPacket= new DatagramPacket(sendData, sendData.length, IPAddress, portNumber);
+				sendPacket= new DatagramPacket(sendData, sendData.length, IPAddress, portNumber);  // sendPacket is ready
+				
 				receivePacket= new DatagramPacket(receiveData, receiveData.length);
 				long beginTime = System.currentTimeMillis();  // calculate total time for receiving and sending packets
 				clientSocket.setSoTimeout(timeout);
@@ -50,7 +53,7 @@ public class UDPClient {
 				clientSocket.send(sendPacket);
 
 				clientSocket.receive(receivePacket);
-
+ 
 
 				long endOfTime= System.currentTimeMillis(); // end of time
 
