@@ -2,15 +2,18 @@ import java.nio.ByteBuffer;
 import java.io.*;
 
 public class Response {
-  private byte[] byteRepresentation;
-  private byte[] id; //byte[2]
-  private byte[] flag;//byte[2]
-  private boolean QR; //1==Response, 0==request
-  private byte[] OPcode;
-  private boolean AA; //1==authoritative,0==non-authoritative
-  private boolean TC; //1==truncated
-  private boolean RA; //1==Recursive
-  private byte[] z;//byte, 3 bits
+  public byte[] byteRepresentation;
+  public byte[] id; //byte[2]
+  public byte[] flag;//byte[2]
+  public boolean QR; //1==Response, 0==request
+  public byte[] OPcode;
+  public boolean AA; //1==authoritative,0==non-authoritative
+  public boolean TC; //1==truncated
+  public boolean RA; //1==Recursive
+  public byte[] z;//byte, 3 bits
+  String ip = "";
+  String queryType = "-A";
+  int time=0;
   
   public Response(byte[] byteRepresentation) {
     byte bqueryType = byteRepresentation[35];
@@ -26,13 +29,36 @@ public class Response {
     for(int i = 0;i<4;i++) {
       ttl[i]=byteRepresentation[38+i];
     }
-    int time = toNum(ttl);
+    time = toNum(ttl);
+    AA = getBit(6, byteRepresentation[2])==0x001;
     
     int[] IP =new int[4];
     for(int i = 0;i<4;i++) {
-      IP[i]=((int)byteRepresentation[38+i]+256);
+      IP[i] = getInt(byteRepresentation[43+i]);
     }
-    String ip ="" + IP[0] +"."+ IP[1] +"."+ IP[2] +"."+ IP[3]; 
+    ip ="" + IP[0] +"."+ IP[1] +"."+ IP[2] +"."+ IP[3]; 
+  }
+  
+  public String writeData() {
+    String toRet = "";
+    if (this.queryType.equals("-A")){
+      toRet += "IP\t";
+    }
+    else if (this.queryType.equals("-NS")) {
+      toRet += "NS\t";
+    }else {
+      toRet += "MX\t";
+    }
+    toRet += this.ip;
+    toRet += "\t";
+    toRet += this.time;
+    toRet += "\t";
+    if (this.AA){
+      toRet += ("auth");
+    }else {
+      toRet += ("nonauth");
+    }
+    return toRet;
   }
 
   
@@ -45,11 +71,19 @@ public class Response {
     int rep=0;
     int placeholder = 1;
     for(int i = 0; i<0;i++) {
-      int digit = ((int)arr[i]+256);
+      int digit = getInt(arr[i]);
       rep +=(digit*placeholder);
       placeholder*=16;
     }
     return rep;
+  }
+  
+  public static int getInt(byte a) {
+    int digit = (int)a;
+    if (digit<0) {
+      digit = (digit+256);
+    }
+    return digit;
   }
   
 }

@@ -1,7 +1,8 @@
+import java.net.DatagramPacket;
 
 public class Main {
 
-  private static int timeout = 5;
+  private static int timeout = 15;
   private static boolean t_flag = false;
   private static int max_retries = 3;
   private static boolean r_flag = false;
@@ -67,6 +68,17 @@ public class Main {
     }
     System.out.println();
     printRequest(name, server, query_type);
+    UDPClient client = new UDPClient();
+    DatagramPacket receiveData = null;
+    
+    try {
+      receiveData = client.sendRequest(timeout,max_retries,port,query_type,server,name,ipAddress);
+    } catch (Exception e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    
+    System.out.println("HERE IS RECEIVEDATA : " +receiveData.getData());
   }
   
   public static int increase_throwError(int i, int length) {

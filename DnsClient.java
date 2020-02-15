@@ -86,7 +86,21 @@ public class DnsClient {
 			UDPClient client = new UDPClient();
 			DatagramPacket receiveData = client.sendRequest(timeout,max_retries,port,query_type,server,name,ipAddress);
 			
-			System.out.println("HERE IS RECEIVEDATA : " +receiveData.getData());
+			//System.out.println("HERE IS RECEIVEDATA : " +receiveData.getData());
+			//System.out.println(receiveData.getData().length);
+			Response r = new Response(receiveData.getData());
+			/*
+			byte[] arrs=new byte[20];
+			System.out.println("-----");
+			for(int j=0;j<50;j++) {
+			  System.out.print(new Response(receiveData.getData()).getInt(receiveData.getData()[j+32]) + " ");
+			}
+	         System.out.println("-----");
+			for(byte a :receiveData.getData()) {
+			  System.out.print(new Response(receiveData.getData()).getInt(a)+" ");
+			}*/
+			
+			System.out.println(r.writeData());
 
 		}catch(Exception e) {
 			e.printStackTrace();
