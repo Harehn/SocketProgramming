@@ -42,7 +42,7 @@ public class UDPClient {
 				receiveData = new byte[1024];
 			
 				Request request= new Request(queryType,domainName);
-				sendData= request.createRequest();
+				sendData= request.getDNSRequest();
 
 				sendPacket= new DatagramPacket(sendData, sendData.length, IPAddress, portNumber);  // sendPacket is ready
 				

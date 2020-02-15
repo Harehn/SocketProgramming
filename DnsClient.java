@@ -1,3 +1,4 @@
+import java.net.DatagramPacket;
 
 public class DnsClient {
 	private static int timeout = 5;
@@ -9,7 +10,7 @@ public class DnsClient {
 	private static String query_type = "type A"; 
 	private static String server = "";
 	private static String name = "";
-	private static byte[] ipAddress;
+	private static byte[] ipAddress= new byte[4];
 
 	public static void main(String args[]) throws Exception {
 
@@ -83,9 +84,9 @@ public class DnsClient {
 
 			printVariables(timeout, max_retries, port, query_type, server, name);
 			UDPClient client = new UDPClient();
-			byte[] receiveData = client.sendRequest(timeout,max_retries,port,query_type,server,name,ipAddress);
+			DatagramPacket receiveData = client.sendRequest(timeout,max_retries,port,query_type,server,name,ipAddress);
 			
-			System.out.println("HERE IS RECEIVEDATA : " +receiveData);
+			System.out.println("HERE IS RECEIVEDATA : " +receiveData.getData());
 
 		}catch(Exception e) {
 			e.printStackTrace();
