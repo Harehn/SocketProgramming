@@ -26,11 +26,13 @@ public class Response {
     for(int i = 0;i<4;i++) {
       ttl[i]=byteRepresentation[38+i];
     }
+    int time = toNum(ttl);
     
-    byte[] IP =new byte[4];
+    int[] IP =new int[4];
     for(int i = 0;i<4;i++) {
-      IP[i]=byteRepresentation[38+i];
+      IP[i]=((int)byteRepresentation[38+i]+256);
     }
+    String ip ="" + IP[0] +"."+ IP[1] +"."+ IP[2] +"."+ IP[3]; 
   }
 
   
@@ -39,6 +41,16 @@ public class Response {
      return (int) ((a >> position) & 1);
   }
   
+  public static int toNum(byte[] arr) {
+    int rep=0;
+    int placeholder = 1;
+    for(int i = 0; i<0;i++) {
+      int digit = ((int)arr[i]+256);
+      rep +=(digit*placeholder);
+      placeholder*=16;
+    }
+    return rep;
+  }
   
 }
 
