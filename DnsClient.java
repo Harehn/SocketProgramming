@@ -82,6 +82,10 @@ public class DnsClient {
 			}
 
 			printVariables(timeout, max_retries, port, query_type, server, name);
+			UDPClient client = new UDPClient();
+			byte[] receiveData = client.sendRequest(timeout,max_retries,port,query_type,server,name,ipAddress);
+			
+			System.out.println("HERE IS RECEIVEDATA : " +receiveData);
 
 		}catch(Exception e) {
 			e.printStackTrace();
